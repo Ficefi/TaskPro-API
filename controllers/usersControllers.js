@@ -6,9 +6,10 @@ import {
 } from '../services/userServices.js';
 
 export const userCurrent = async (req, res, next) => {
-  const { token } = req.user;
+  const { accessToken } = req.user;
   try {
-    const user = await findUserByToken(token);
+    const user = await findUserByToken(accessToken);
+    console.log(user);
     const { name, email, theme, avatarURL } = user;
 
     if (!user) {
