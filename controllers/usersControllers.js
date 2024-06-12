@@ -6,10 +6,11 @@ import {
 } from '../services/userServices.js';
 
 export const userCurrent = async (req, res, next) => {
-  const { token } = req.user;
+  const { accessToken } = req.user;
   try {
-    const user = await findUserByToken(token);
-    const { name, email, gender, weight, time, waterRate, avatarURL } = user;
+    const user = await findUserByToken(accessToken);
+    console.log(user);
+    const { name, email, theme, avatarURL } = user;
 
     if (!user) {
       throw HttpError(401, 'User doesn`t exist');
@@ -18,10 +19,7 @@ export const userCurrent = async (req, res, next) => {
     res.status(200).json({
       name,
       email,
-      gender,
-      weight,
-      time,
-      waterRate,
+      theme,
       avatarURL,
     });
   } catch (error) {

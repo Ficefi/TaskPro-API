@@ -191,7 +191,7 @@
           "description": "Object for update user",
           "required": true,
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
                 "$ref": "#/components/schemas/UpdateRequest"
               }
@@ -224,15 +224,8 @@
       "post": {
         "tags": ["Boards"],
         "summary": "Create new board",
-        "parameters": [
-          {
-            "in": "query",
-            "name": "name",
-            "required": true,
-            "type": "string",
-            "description": "Enter title name "
-          }
-        ],
+        "security": [{ "Bearer": [] }],
+        "parameters": [],
         "requestBody": {
           "description": "Boards object",
           "required": true,
@@ -268,18 +261,8 @@
       "get": {
         "tags": ["Boards"],
         "summary": "Get all boards",
+        "security": [{ "Bearer": [] }],
         "parameters": [],
-        "requestBody": {
-          "description": "Boards object",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/GetAllBoardRequest"
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
             "description": "Successful operation",
@@ -302,10 +285,11 @@
         }
       }
     },
-    "/boards/:boardId": {
+    "/boards/{boardId}": {
       "get": {
         "tags": ["Boards"],
         "summary": "Get board per id",
+        "security": [{ "Bearer": [] }],
         "parameters": [
           {
             "in": "path",
@@ -315,17 +299,6 @@
             "description": "Enter board id"
           }
         ],
-        "requestBody": {
-          "description": "Boards object",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/OneBoardRequest"
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
             "description": "Successful operation",
@@ -350,6 +323,7 @@
       "put": {
         "tags": ["Boards"],
         "summary": "Edit board per id",
+        "security": [{ "Bearer": [] }],
         "parameters": [
           {
             "in": "path",
@@ -357,13 +331,6 @@
             "required": true,
             "type": "string",
             "description": "Enter board id"
-          },
-          {
-            "in": "query",
-            "name": "owner",
-            "required": true,
-            "type": "string",
-            "description": "Enter owner id"
           }
         ],
         "requestBody": {
@@ -401,6 +368,7 @@
       "delete": {
         "tags": ["Boards"],
         "summary": "Delete board per id",
+        "security": [{ "Bearer": [] }],
         "parameters": [
           {
             "in": "path",
@@ -408,26 +376,8 @@
             "required": true,
             "type": "string",
             "description": "Enter board id"
-          },
-          {
-            "in": "query",
-            "name": "owner",
-            "required": true,
-            "type": "string",
-            "description": "Enter owner id"
           }
         ],
-        "requestBody": {
-          "description": "Boards object",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/DeleteBoardRequest"
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
             "description": "Successful operation",
@@ -454,6 +404,7 @@
       "post": {
         "tags": ["Columns"],
         "summary": "Create new column",
+        "security": [{ "Bearer": [] }],
         "parameters": [
           {
             "in": "query",
@@ -505,6 +456,7 @@
       "get": {
         "tags": ["Columns"],
         "summary": "Get all Columns",
+        "security": [{ "Bearer": [] }],
         "parameters": [
           {
             "in": "query",
@@ -547,10 +499,11 @@
         }
       }
     },
-    "/columns/:columnId": {
+    "/columns/{columnId}": {
       "get": {
         "tags": ["Columns"],
         "summary": "Get column per id",
+        "security": [{ "Bearer": [] }],
         "parameters": [
           {
             "in": "path",
@@ -595,6 +548,7 @@
       "put": {
         "tags": ["Columns"],
         "summary": "Edit column per id",
+        "security": [{ "Bearer": [] }],
         "parameters": [
           {
             "in": "path",
@@ -646,6 +600,7 @@
       "delete": {
         "tags": ["Columns"],
         "summary": "Delete column per id",
+        "security": [{ "Bearer": [] }],
         "parameters": [
           {
             "in": "path",
@@ -699,6 +654,7 @@
       "post": {
         "tags": ["Cards"],
         "summary": "Create new card",
+        "security": [{ "Bearer": [] }],
         "parameters": [
           {
             "in": "query",
@@ -757,6 +713,7 @@
       "get": {
         "tags": ["Cards"],
         "summary": "Get all Cards",
+        "security": [{ "Bearer": [] }],
         "parameters": [
           {
             "in": "query",
@@ -799,10 +756,11 @@
         }
       }
     },
-    "/cards/:cardId": {
+    "/cards/{cardId}": {
       "get": {
         "tags": ["Cards"],
         "summary": "Get card per id",
+        "security": [{ "Bearer": [] }],
         "parameters": [
           {
             "in": "path",
@@ -847,6 +805,7 @@
       "put": {
         "tags": ["Cards"],
         "summary": "Edit card per id",
+        "security": [{ "Bearer": [] }],
         "parameters": [
           {
             "in": "path",
@@ -898,6 +857,7 @@
       "delete": {
         "tags": ["Cards"],
         "summary": "Delete card per id",
+        "security": [{ "Bearer": [] }],
         "parameters": [
           {
             "in": "path",
@@ -959,6 +919,10 @@
             "type": "string",
             "description": "user`s id"
           },
+          "name": {
+            "type": "string",
+            "description": "user`s name"
+          },
           "password": {
             "type": "string",
             "description": "user`s password"
@@ -968,33 +932,21 @@
             "description": "user`s email",
             "format": "email"
           },
-          "name": {
-            "type": "string",
-            "description": "user`s name"
-          },
-          "gender": {
-            "type": "string",
-            "description": "user`s name"
-          },
-          "weight": {
-            "type": "number",
-            "description": "user`s weight"
-          },
-          "time": {
-            "type": "number",
-            "description": "user`s time for sport"
-          },
-          "waterRate": {
-            "type": "number",
-            "description": "user`s waterRate"
+          "theme": {
+            "type": "String",
+            "description": "choosen theme by user"
           },
           "avatarURL": {
             "type": "string",
             "description": "user`s avatarURL"
           },
-          "token": {
+          "accessToken": {
             "type": "string",
-            "description": "user`s token"
+            "description": "user`s access token"
+          },
+          "refreshToken": {
+            "type": "string",
+            "description": "user`s refresh token"
           }
         }
       },
@@ -1096,6 +1048,10 @@
                 "type": "string",
                 "description": "user`s id"
               },
+              "name": {
+                "type": "string",
+                "description": "user`s name"
+              },
               "password": {
                 "type": "string",
                 "description": "user`s password"
@@ -1105,33 +1061,21 @@
                 "description": "user`s email",
                 "format": "email"
               },
-              "name": {
-                "type": "string",
-                "description": "user`s name"
-              },
-              "gender": {
-                "type": "string",
-                "description": "user`s name"
-              },
-              "weight": {
-                "type": "number",
-                "description": "user`s weight"
-              },
-              "time": {
-                "type": "number",
-                "description": "user`s time for sport"
-              },
-              "waterRate": {
-                "type": "number",
-                "description": "user`s waterRate"
+              "theme": {
+                "type": "String",
+                "description": "choosen theme by user"
               },
               "avatarURL": {
                 "type": "string",
                 "description": "user`s avatarURL"
               },
-              "token": {
+              "accessToken": {
                 "type": "string",
-                "description": "user`s token"
+                "description": "user`s access token"
+              },
+              "refreshToken": {
+                "type": "string",
+                "description": "user`s refresh token"
               }
             }
           }
@@ -1143,10 +1087,7 @@
             "password": "$2a$10$lWIBnmq8a3sV1sXXcjpmGOax1Drw4qxNt4ViiQiB244NoUYAPox.G",
             "email": "jasonwilhem12@gmail.com",
             "name": "Jason Wilhem",
-            "gender": "male",
-            "weight": 98,
-            "time": 3,
-            "waterRate": 1000,
+            "theme": "Light",
             "avatarURL": "http://www.gravatar.com/avatar/cae73c2e854be6c0a89fcd6bbb5b28be",
             "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NGNlNWIzNmExYTA4YmY3NDYyNjVjNyIsImlhdCI6MTcxNjMyMjEyMn0.J5T57VS3La7R271mBFr6gzV8TlrnKYDc1lbBWjh_KmA"
           }
@@ -1166,7 +1107,7 @@
         "type": "object",
         "properties": {
           "email": {
-            "type": "string",
+            "type": "file",
             "description": "User's email",
             "format": "email"
           },
@@ -1187,6 +1128,10 @@
                 "type": "string",
                 "description": "user`s id"
               },
+              "name": {
+                "type": "string",
+                "description": "user`s name"
+              },
               "password": {
                 "type": "string",
                 "description": "user`s password"
@@ -1196,33 +1141,21 @@
                 "description": "user`s email",
                 "format": "email"
               },
-              "name": {
-                "type": "string",
-                "description": "user`s name"
-              },
-              "gender": {
-                "type": "string",
-                "description": "user`s name"
-              },
-              "weight": {
-                "type": "number",
-                "description": "user`s weight"
-              },
-              "time": {
-                "type": "number",
-                "description": "user`s time for sport"
-              },
-              "waterRate": {
-                "type": "number",
-                "description": "user`s waterRate"
+              "theme": {
+                "type": "String",
+                "description": "choosen theme by user"
               },
               "avatarURL": {
                 "type": "string",
                 "description": "user`s avatarURL"
               },
-              "token": {
+              "accessToken": {
                 "type": "string",
-                "description": "user`s token"
+                "description": "user`s access token"
+              },
+              "refreshToken": {
+                "type": "string",
+                "description": "user`s refresh token"
               }
             }
           }
@@ -1234,10 +1167,7 @@
             "password": "$2a$10$lWIBnmq8a3sV1sXXcjpmGOax1Drw4qxNt4ViiQiB244NoUYAPox.G",
             "email": "jasonwilhem12@gmail.com",
             "name": "Jason Wilhem",
-            "gender": "male",
-            "weight": 98,
-            "time": 3,
-            "waterRate": 1000,
+            "theme": "Violet",
             "avatarURL": "http://www.gravatar.com/avatar/cae73c2e854be6c0a89fcd6bbb5b28be",
             "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NGNlNWIzNmExYTA4YmY3NDYyNjVjNyIsImlhdCI6MTcxNjMyMjEyMn0.J5T57VS3La7R271mBFr6gzV8TlrnKYDc1lbBWjh_KmA"
           }
