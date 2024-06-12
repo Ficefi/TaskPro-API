@@ -5,7 +5,13 @@ export const addColumn = async (req, res, next) => {
   const { title, boardId } = req.body;
 
   if (!title) {
-    return res.status(400).send({ message: 'Title is required' });
+    throw HttpError(400, 'Title is required');
+  }
+
+  const column = await Column.findOne({ title });
+
+  if (column) {
+    throw HttpError(400, 'This title is already used');
   }
 
   const taskColumn = {

@@ -11,7 +11,7 @@
   },
   "consumes": ["application/json"],
   "produces": ["application/json"],
-  "servers": [{ "url": "" }],
+  "servers": [{ "url": "https://taskpro-api-nmqb.onrender.com/" }],
   "tags": [
     {
       "name": "Auth",
@@ -405,22 +405,6 @@
         "tags": ["Columns"],
         "summary": "Create new column",
         "security": [{ "Bearer": [] }],
-        "parameters": [
-          {
-            "in": "query",
-            "name": "title",
-            "required": true,
-            "type": "string",
-            "description": "Enter title name "
-          },
-          {
-            "in": "query",
-            "name": "boardId",
-            "required": true,
-            "type": "string",
-            "description": "Enter board id"
-          }
-        ],
         "requestBody": {
           "description": "Columns object",
           "required": true,
@@ -457,15 +441,6 @@
         "tags": ["Columns"],
         "summary": "Get all Columns",
         "security": [{ "Bearer": [] }],
-        "parameters": [
-          {
-            "in": "query",
-            "name": "boardId",
-            "required": true,
-            "type": "string",
-            "description": "Enter board id"
-          }
-        ],
         "requestBody": {
           "description": "Columns object",
           "required": true,
@@ -556,13 +531,6 @@
             "required": true,
             "type": "string",
             "description": "Enter column id"
-          },
-          {
-            "in": "query",
-            "name": "boardId",
-            "required": true,
-            "type": "string",
-            "description": "Enter board id"
           }
         ],
         "requestBody": {
@@ -608,13 +576,6 @@
             "required": true,
             "type": "string",
             "description": "Enter column id"
-          },
-          {
-            "in": "query",
-            "name": "boardId",
-            "required": true,
-            "type": "string",
-            "description": "Enter board id"
           }
         ],
         "requestBody": {
@@ -954,6 +915,11 @@
         "type": "object",
         "required": ["email", "password"],
         "properties": {
+          "name": {
+            "type": "string",
+            "description": "User's name",
+            "example": "Example_name"
+          },
           "email": {
             "type": "string",
             "description": "User's email",
@@ -987,7 +953,9 @@
         },
         "example": [
           {
+            "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZXNzYWdlIjoiV2h5IGFyZSB5b3UgdHJ5IHRvIGRlY29kZSBpdD8ifQ.8FnSdONYyG6MTCwm4my9XHdg8RQNEhjn-emR9DBs5Bw",
             "user": {
+              "name": "Mango",
               "email": "mango123@gmail.com"
             },
             "message": "User created"
@@ -1032,9 +1000,7 @@
         "example": [
           {
             "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZXNzYWdlIjoiV2h5IGFyZSB5b3UgdHJ5IHRvIGRlY29kZSBpdD8ifQ.8FnSdONYyG6MTCwm4my9XHdg8RQNEhjn-emR9DBs5Bw",
-            "user": {
-              "email": "mango123@gmail.com"
-            }
+            "user": { "name": "Mango", "email": "mango123@gmail.com" }
           }
         ]
       },
@@ -1106,15 +1072,25 @@
       "UpdateRequest": {
         "type": "object",
         "properties": {
+          "name": {
+            "type": "string",
+            "description": "User's name",
+            "example": "Mango"
+          },
           "email": {
-            "type": "file",
+            "type": "string",
             "description": "User's email",
-            "format": "email"
+            "format": "email",
+            "example": "mango@example.com"
           },
           "password": {
             "type": "string",
             "description": "User's password",
             "example": "qwerty123"
+          },
+          "avatar": {
+            "type": "file",
+            "description": "avatar upload"
           }
         }
       },
@@ -1371,22 +1347,21 @@
       },
       "EditBoardRequest": {
         "type": "object",
-        "required": ["boardId", "owner"],
         "properties": {
-          "boardId": {
-            "type": "string",
-            "description": "Board id",
-            "example": "6665a18a8ac6850e904867be"
-          },
-          "owner": {
-            "type": "string",
-            "description": "Board owner",
-            "example": "6665a18a8ac6850e904867be"
-          },
           "title": {
             "type": "string",
             "description": "Board title",
             "example": "Example"
+          },
+          "background": {
+            "type": "string",
+            "description": "Board title",
+            "example": "Sakura"
+          },
+          "icon": {
+            "type": "string",
+            "description": "Board title",
+            "example": "Star"
           }
         }
       },
@@ -1686,11 +1661,6 @@
             "description": "Board id",
             "example": "6665a18a8ac6850e904867be"
           },
-          "columnId": {
-            "type": "string",
-            "description": "Column id",
-            "example": "6665a18a8ac6850e904867be"
-          },
           "title": {
             "type": "string",
             "description": "Board title",
@@ -1749,11 +1719,6 @@
           "boardId": {
             "type": "string",
             "description": "Board id",
-            "example": "6665a18a8ac6850e904867be"
-          },
-          "columnId": {
-            "type": "string",
-            "description": "Column id",
             "example": "6665a18a8ac6850e904867be"
           }
         }
