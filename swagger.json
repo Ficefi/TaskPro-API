@@ -11,7 +11,7 @@
   },
   "consumes": ["application/json"],
   "produces": ["application/json"],
-  "servers": [{ "url": "https://aquatrack-api.onrender.com" }],
+  "servers": [{ "url": "https://taskpro-api-nmqb.onrender.com/" }],
   "tags": [
     {
       "name": "Auth",
