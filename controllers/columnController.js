@@ -29,14 +29,16 @@ export const addColumn = async (req, res, next) => {
 };
 
 export const getAllColumns = async (req, res, next) => {
-  const { boardId } = req.body;
+  const { _id } = req.user;
+
+  console.log(_id);
 
   try {
-    if (!boardId) {
+    if (!_id) {
       throw HttpError(400);
     }
 
-    const allColumns = await Column.find({ boardId }).populate('cards');
+    const allColumns = await Column.find({ _id }).populate('cards');
 
     if (!allColumns) {
       throw HttpError(404);

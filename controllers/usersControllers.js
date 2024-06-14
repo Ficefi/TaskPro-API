@@ -49,7 +49,7 @@ export const userHelpRequest = async (req, res, next) => {
   try {
     await sendMail(sender, comment);
 
-    res.status(200).json({ message: 'Mail was sent' });
+    res.status(201).json({ message: 'Mail was sent' });
   } catch (error) {
     next(error);
   }

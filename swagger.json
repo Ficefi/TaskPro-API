@@ -11,7 +11,7 @@
   },
   "consumes": ["application/json"],
   "produces": ["application/json"],
-  "servers": [{ "url": "https://taskpro-api-nmqb.onrender.com/" }],
+  "servers": [{ "url": "" }],
   "tags": [
     {
       "name": "Auth",
@@ -32,6 +32,10 @@
     {
       "name": "Cards",
       "description": "Endpoint about card information"
+    },
+    {
+      "name": "Theme",
+      "description": "Endpoint about themes on website"
     }
   ],
   "paths": {
@@ -123,6 +127,44 @@
           },
           "500": {
             "description": "Server Error",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/users/help": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Ask tech-support for help",
+        "security": [{ "Bearer": [true] }],
+        "requestBody": {
+          "description": "Object for send asking letter",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/HelpRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HelpResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad information",
+            "content": {}
+          },
+          "401": {
+            "description": "Missing token authorization",
             "content": {}
           }
         }
@@ -441,17 +483,6 @@
         "tags": ["Columns"],
         "summary": "Get all Columns",
         "security": [{ "Bearer": [] }],
-        "requestBody": {
-          "description": "Columns object",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/GetAllColumnRequest"
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
             "description": "Successful operation",
@@ -616,29 +647,6 @@
         "tags": ["Cards"],
         "summary": "Create new card",
         "security": [{ "Bearer": [] }],
-        "parameters": [
-          {
-            "in": "query",
-            "name": "title",
-            "required": true,
-            "type": "string",
-            "description": "Enter title name"
-          },
-          {
-            "in": "query",
-            "name": "description",
-            "required": true,
-            "type": "string",
-            "description": "Enter description"
-          },
-          {
-            "in": "query",
-            "name": "columnId",
-            "required": true,
-            "type": "string",
-            "description": "Enter column id"
-          }
-        ],
         "requestBody": {
           "description": "Cards object",
           "required": true,
@@ -675,26 +683,6 @@
         "tags": ["Cards"],
         "summary": "Get all Cards",
         "security": [{ "Bearer": [] }],
-        "parameters": [
-          {
-            "in": "query",
-            "name": "columnId",
-            "required": true,
-            "type": "string",
-            "description": "Enter column id"
-          }
-        ],
-        "requestBody": {
-          "description": "Cards object",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/GetAllCardRequest"
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
             "description": "Successful operation",
@@ -731,17 +719,6 @@
             "description": "Enter card id"
           }
         ],
-        "requestBody": {
-          "description": "Cards object",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/OneCardRequest"
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
             "description": "Successful operation",
@@ -774,13 +751,6 @@
             "required": true,
             "type": "string",
             "description": "Enter card id"
-          },
-          {
-            "in": "query",
-            "name": "columnId",
-            "required": true,
-            "type": "string",
-            "description": "Enter column id"
           }
         ],
         "requestBody": {
@@ -826,22 +796,41 @@
             "required": true,
             "type": "string",
             "description": "Enter card id"
-          },
-          {
-            "in": "query",
-            "name": "columnId",
-            "required": true,
-            "type": "string",
-            "description": "Enter column id"
           }
         ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteCardResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          },
+          "404": {
+            "description": "Not found",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/theme": {
+      "patch": {
+        "tags": ["Theme"],
+        "summary": "Change the user theme",
+        "security": [{ "Bearer": [] }],
         "requestBody": {
-          "description": "Cards object",
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/DeleteCardRequest"
+                "$ref": "#/components/schemas/ThemeRequest"
               }
             }
           }
@@ -852,7 +841,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DeleteCardResponse"
+                  "$ref": "#/components/schemas/ThemeResponse"
                 }
               }
             }
@@ -1769,22 +1758,31 @@
       },
       "CreateCardRequest": {
         "type": "object",
-        "required": ["title", "description", "columnId"],
         "properties": {
           "title": {
             "type": "string",
             "description": "Card title",
             "example": "Example"
           },
-          "columnId": {
+          "priority": {
             "type": "string",
-            "description": "Column id",
-            "example": "6665a18a8ac6850e904867be"
+            "description": "Importance of task",
+            "example": "medium"
           },
           "description": {
             "type": "string",
             "description": "Description of card",
             "example": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+          },
+          "deadline": {
+            "type": "string",
+            "description": "Deadline of task",
+            "example": "null for now"
+          },
+          "columnId": {
+            "type": "string",
+            "description": "Column id",
+            "example": "6665a18a8ac6850e904867be"
           }
         }
       },
@@ -1986,13 +1984,8 @@
       },
       "EditCardRequest": {
         "type": "object",
-        "required": ["cardId", "columnId"],
+        "required": ["cardId"],
         "properties": {
-          "columnId": {
-            "type": "string",
-            "description": "Column id",
-            "example": "6665a18a8ac6850e904867be"
-          },
           "title": {
             "type": "string",
             "description": "Board title",
@@ -2025,7 +2018,7 @@
       },
       "EditCardResponse": {
         "type": "object",
-        "required": ["cardId", "columnId"],
+        "required": ["cardId"],
         "properties": {
           "columnId": {
             "type": "string",
@@ -2064,7 +2057,7 @@
       },
       "DeleteCardRequest": {
         "type": "object",
-        "required": ["columnId", "cardId"],
+        "required": ["cardId"],
         "properties": {
           "columnId": {
             "type": "string",
@@ -2125,6 +2118,55 @@
           "columnId": "6662fb09948f214dea2e4d30",
           "createdAt": "2024-06-09T16:29:27.832Z",
           "updatedAt": "2024-06-09T16:29:27.832Z"
+        }
+      },
+      "ThemeRequest": {
+        "type": "object",
+        "required": true,
+        "properties": {
+          "theme": {
+            "type": "string",
+            "description": "theme to switch",
+            "example": "Violet"
+          }
+        }
+      },
+      "ThemeResponse": {
+        "type": "object",
+        "required": true,
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "theme to switch",
+            "example": "Success! Theme was changed to Violet"
+          }
+        }
+      },
+      "HelpRequest": {
+        "type": "object",
+        "required": true,
+        "properties": {
+          "sender": {
+            "type": "string",
+            "description": "who send the email",
+            "example": "mango123@gmail.com"
+          },
+          "comment": {
+            "type": "string",
+            "description": "what the problem is",
+            "example": "I have a bug with ..."
+          }
+        }
+      },
+      "HelpResponse": {
+        "type": "object",
+        "required": true,
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Result of send",
+            "example": "Mail was sent"
+          }
         }
       }
     },

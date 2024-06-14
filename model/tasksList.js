@@ -30,6 +30,10 @@ const columnsSchema = new Schema(
       required: [true, 'Board ID is required'],
     },
     cards: [{ type: Schema.Types.ObjectId, ref: 'Card' }],
+    owner: {
+      type: Schema.Types.ObjectId,
+      ref: 'user',
+    },
   },
   { timestamps: true, versionKey: false }
 );
@@ -56,7 +60,11 @@ const cardsSchema = new Schema(
     },
     columnId: {
       type: String,
-      required: true,
+      ref: 'column',
+    },
+    owner: {
+      type: Schema.Types.ObjectId,
+      ref: 'user',
     },
   },
   { timestamps: true, versionKey: false }
