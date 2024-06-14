@@ -1,21 +1,36 @@
-import HttpError from '../helpers/HttpError.js';
-import { Board } from '../model/tasksList.js';
+import HttpError from '../helpers/index.js';
+import { Board } from '../model/board.js';
+import Column from '../model/column.js';
+import Task from '../model/tasks.js';
 
 export const addBoard = async (req, res, next) => {
-  const { name } = req.body;
+  const { _id: owner } = req.user;
+  const result = await Board.create({ ...req.body, owner });
+  res.status(201).json(result);
+};
+const getByID = async (req, res) => {
+  const { id } = req.params;
+  const { _id: owner } = req.user;
 
-  try {
-    const board = {
-      name,
-      owner: req.user.id,
-    };
+  const result = await Board.findOne({ _id: id, owner }).populate({
+    path: 'columns',
+    select: 'title boardID owner',
 
-    const newBoard = await Board.create(board);
+    populate: {
+      path: 'tasks',
+      select: 'title description priority deadline columnID owner',
+    },
+  });
 
-    res.status(200).json(newBoard);
-  } catch (error) {
-    next(error);
-  }
+  if (!result) throw HttpError(404, `Board with id=${id} not found!`);
+
+  res.json(result);
+};
+
+const getAllBoards = async (req, res) => {
+  const { _id: owner } = req.user;
+  const result = await Board.find({ owner }).populate('columns', ['title']);
+  res.json(result);
 };
 
 export const editBoard = async (req, res, next) => {
@@ -42,6 +57,19 @@ export const editBoard = async (req, res, next) => {
 
 export const deleteBoard = async (req, res, next) => {
   const { id } = req.params;
+  const { _id: owner } = req.user;
+
+  const existingBoard = await Board.findByIdAndDelete({ _id: id, owner });
+  if (!existingBoard) throw HttpError(404, `Board with id=${id} not found`);
+
+  const ownColumns = await Column.find({ boardID: id });
+  const columnIDs = ownColumns.map((column) => column._id);
+
+  await Task.deleteMany({ columnID: { $in: columnIDs } });
+
+  await Column.deleteMany({ boardID: id });
+
+  res.status(204).json({ message: 'Board deleted successfully' });
 
   try {
     const board = await Board.findOneAndDelete({

@@ -1,6 +1,12 @@
 import HttpError from '../helpers/HttpError.js';
 import { isValidJWT } from './isValidJWT.js';
 import { User } from '../model/user.js';
+import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
+
+dotenv.config();
+
+const { JWT_SECRET } = process.env;
 
 export const auth = async (req, res, next) => {
   const { authorization = '' } = req.headers;
@@ -11,7 +17,7 @@ export const auth = async (req, res, next) => {
   }
 
   try {
-    const { id } = isValidJWT(token);
+    const { id } = isValidJWT(token, JWT_SECRET);
 
     const user = await User.findById(id);
 
@@ -24,3 +30,5 @@ export const auth = async (req, res, next) => {
     next(error);
   }
 };
+
+export default ctrlWrapper(auth);

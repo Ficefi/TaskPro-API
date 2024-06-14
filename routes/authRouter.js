@@ -19,4 +19,24 @@ authRouter.post('/login', validateBody(loginUserSchema), SignIn);
 userRouter.get('/refresh', refreshAuth, refreshToken);
 authRouter.post('/logout', auth, LogOut);
 
+authRouter.patch(
+  '/changeTheme',
+  authenticate,
+  isEmptyBody,
+  validateBody(userChangeThemeSchema),
+  authController.changeTheme
+);
+authRouter.post(
+  '/needHelp',
+  authenticate,
+  isEmptyBody,
+  validateBody(userHelpMailScheme),
+  authController.sendNeedHelp
+);
+authRouter.post('/recovery-mail', isEmptyBody, authController.forgotPassword);
+authRouter.patch('/reset-password', isEmptyBody, authController.resetPassword);
+
+authRouter.get('/google-auth', authController.googleAuth);
+authRouter.get('/google-redirect', authController.googleRedirect);
+
 export default authRouter;
