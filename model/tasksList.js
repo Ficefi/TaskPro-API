@@ -12,10 +12,10 @@ const boardSchema = new Schema(
       ref: 'user',
       required: true,
     },
-    icon: { type: String, default: 'Icon1' },
+    icon: { type: String, default: 'icon1' },
     background: {
       type: String,
-      default: 'bg-1',
+      default: null,
     },
     columns: [{ type: Schema.Types.ObjectId, ref: 'Column' }],
   },

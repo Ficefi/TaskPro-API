@@ -4,9 +4,11 @@ export const changeTheme = async (req, res, next) => {
   const { theme } = req.body;
   const { id } = req.user;
   try {
-    const result = await updateUserData(id, { theme });
+    await updateUserData(id, { theme });
 
-    res.status(200).send(result);
+    res.status(200).json({
+      message: `Success! Theme was changed to ${theme}`,
+    });
   } catch (error) {
     next(error);
   }

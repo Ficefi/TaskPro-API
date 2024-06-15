@@ -3,6 +3,7 @@ import { Card, Column } from '../model/tasksList.js';
 
 export const addColumn = async (req, res, next) => {
   const { title, boardId } = req.body;
+  const { _id } = req.user;
 
   if (!title) {
     throw HttpError(400, 'Title is required');
@@ -17,6 +18,7 @@ export const addColumn = async (req, res, next) => {
   const taskColumn = {
     title,
     boardId,
+    owner: _id,
   };
 
   try {
@@ -31,14 +33,12 @@ export const addColumn = async (req, res, next) => {
 export const getAllColumns = async (req, res, next) => {
   const { _id } = req.user;
 
-  console.log(_id);
-
   try {
     if (!_id) {
-      throw HttpError(400);
+      throw HttpError(401);
     }
 
-    const allColumns = await Column.find({ _id }).populate('cards');
+    const allColumns = await Column.find({ owner: _id }).populate('cards');
 
     if (!allColumns) {
       throw HttpError(404);
@@ -52,7 +52,7 @@ export const getAllColumns = async (req, res, next) => {
 
 export const getOneColumn = async (req, res, next) => {
   const { columnId } = req.params;
-  const { boardId } = req.body;
+  const { id } = req.user;
 
   try {
     const column = await Column.findById(columnId);
@@ -61,7 +61,7 @@ export const getOneColumn = async (req, res, next) => {
       throw HttpError(404);
     }
 
-    if (!column.boardId || column.boardId.toString() !== boardId.toString()) {
+    if (column.owner._id.toString() !== id) {
       throw HttpError(400, 'Column does not belong to the specified board');
     }
 
@@ -80,7 +80,7 @@ export const getOneColumn = async (req, res, next) => {
 
 export const editColumn = async (req, res, next) => {
   const { columnId } = req.params;
-  const { boardId } = req.body;
+  const { id } = req.user;
 
   try {
     const column = await Column.findById(columnId);
@@ -89,7 +89,7 @@ export const editColumn = async (req, res, next) => {
       throw HttpError(404);
     }
 
-    if (!column.boardId || column.boardId.toString() !== boardId.toString()) {
+    if (column.owner._id.toString() !== id) {
       throw HttpError(400, 'Column does not belong to the specified board');
     }
 
@@ -105,7 +105,7 @@ export const editColumn = async (req, res, next) => {
 
 export const deleteColumn = async (req, res, next) => {
   const { columnId } = req.params;
-  const { boardId } = req.body;
+  const { id } = req.user;
 
   try {
     const column = await Column.findById(columnId);
@@ -114,7 +114,7 @@ export const deleteColumn = async (req, res, next) => {
       throw HttpError(404);
     }
 
-    if (!column.boardId || column.boardId.toString() !== boardId.toString()) {
+    if (column.owner._id.toString() !== id) {
       throw HttpError(400, 'Column does not belong to the specified board');
     }
 
