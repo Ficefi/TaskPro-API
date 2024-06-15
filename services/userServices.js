@@ -1,5 +1,6 @@
 import { User } from '../model/user.js';
 import nodemailer from 'nodemailer';
+import bcrypt from 'bcryptjs';
 import 'dotenv/config';
 
 export const findUserByToken = async (token) => {
@@ -8,6 +9,12 @@ export const findUserByToken = async (token) => {
 };
 
 export const updateUserData = async (id, userData) => {
+  const { password } = userData;
+
+  if (password) {
+    userData.password = await bcrypt.hash(password, 10);
+  }
+
   const updatedUser = await User.findByIdAndUpdate(
     id,
     { ...userData },

@@ -9,6 +9,7 @@ import userRouter from './routes/userRouter.js';
 import boardRouter from './routes/boardRoutes.js';
 import columnRouter from './routes/columnRouters.js';
 import cardRouters from './routes/cardRouters.js';
+import themeRouter from './routes/themeRouter.js';
 
 export const app = express();
 
@@ -22,6 +23,8 @@ app.use('/users/', userRouter);
 app.use('/boards/', boardRouter);
 app.use('/columns/', columnRouter);
 app.use('/cards/', cardRouters);
+
+app.use('/theme/', themeRouter)
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 

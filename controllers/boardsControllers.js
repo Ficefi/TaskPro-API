@@ -1,3 +1,4 @@
+import { ObjectId } from 'mongodb';
 import HttpError from '../helpers/HttpError.js';
 import { Board, Card, Column } from '../model/tasksList.js';
 
@@ -70,16 +71,21 @@ export const getOneBoard = async (req, res, next) => {
 
 export const editBoard = async (req, res, next) => {
   const { boardId } = req.params;
-  const { owner } = req.body;
+  const { id } = req.user;
 
   try {
+    console.log(boardId);
     const board = await Board.findById(boardId);
+    console.log(board);
 
     if (!board) {
       throw HttpError(404);
     }
 
-    if (!board.owner || board.owner.toString() !== owner.toString()) {
+    // console.log(board.owner.toString());
+    // console.log(id);
+
+    if (board.owner.toString() != id) {
       throw HttpError(400, 'Board does not belong to the specified user');
     }
 
@@ -99,6 +105,7 @@ export const deleteBoard = async (req, res, next) => {
 
   try {
     const board = await Board.findById(boardId);
+    console.log(board);
 
     if (!board) {
       throw HttpError(404);
