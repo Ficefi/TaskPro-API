@@ -2,11 +2,13 @@ import HttpError from '../helpers/HttpError.js';
 import { Board, Card, Column } from '../model/tasksList.js';
 
 export const addBoard = async (req, res, next) => {
-  const { title } = req.body;
+  const { title, icon, background } = req.body;
 
   try {
     const board = {
       title,
+      icon,
+      background,
       owner: req.user.id,
     };
 

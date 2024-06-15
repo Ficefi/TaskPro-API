@@ -12,6 +12,11 @@ const boardSchema = new Schema(
       ref: 'user',
       required: true,
     },
+    icon: { type: String, default: 'Icon1' },
+    background: {
+      type: String,
+      default: 'bg-1',
+    },
     columns: [{ type: Schema.Types.ObjectId, ref: 'Column' }],
   },
   { timestamps: true, versionKey: false }
