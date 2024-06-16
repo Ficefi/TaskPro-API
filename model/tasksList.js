@@ -12,7 +12,7 @@ const boardSchema = new Schema(
       ref: 'user',
       required: true,
     },
-    icon: { type: String, default: 'icon1' },
+    icon: { type: String, default: 'icon-projects' },
     background: {
       type: String,
       default: null,
