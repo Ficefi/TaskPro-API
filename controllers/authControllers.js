@@ -27,8 +27,9 @@ export const SignUp = async (req, res, next) => {
       user: {
         name,
         email,
-        token: newUser.accessToken,
       },
+      token: newUser.accessToken,
+      refreshToken: newUser.refreshToken,
       message: 'User created',
     });
   } catch (error) {
@@ -52,12 +53,12 @@ export const SignIn = async (req, res, next) => {
     const newUser = await updateUserWithToken(user.id);
 
     res.status(200).json({
-      token: newUser.accessToken,
-      refreshToken: newUser.refreshToken,
       user: {
         name: newUser.name,
         email,
       },
+      token: newUser.accessToken,
+      refreshToken: newUser.refreshToken,
     });
   } catch (error) {
     next(error);

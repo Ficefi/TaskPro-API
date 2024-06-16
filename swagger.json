@@ -880,7 +880,7 @@
       },
       "RegistrationRequest": {
         "type": "object",
-        "required": ["email", "password"],
+        "required": ["name", "email", "password"],
         "properties": {
           "name": {
             "type": "string",
@@ -1075,10 +1075,6 @@
                 "type": "string",
                 "description": "user`s name"
               },
-              "password": {
-                "type": "string",
-                "description": "user`s password"
-              },
               "email": {
                 "type": "string",
                 "description": "user`s email",
@@ -1091,14 +1087,6 @@
               "avatarURL": {
                 "type": "string",
                 "description": "user`s avatarURL"
-              },
-              "accessToken": {
-                "type": "string",
-                "description": "user`s access token"
-              },
-              "refreshToken": {
-                "type": "string",
-                "description": "user`s refresh token"
               }
             }
           }
@@ -1136,22 +1124,23 @@
       },
       "CreateBoardRequest": {
         "type": "object",
-        "required": ["title"],
+        "required": ["title", "icon", "background"],
         "properties": {
           "title": {
             "type": "string",
+
             "description": "Board title",
             "example": "Example"
           },
           "icon": {
             "type": "String",
             "description": "Board icon",
-            "example": "icon1"
+            "example": "icon-projects"
           },
           "background": {
             "type": "String",
             "description": "Board background",
-            "example": "Example"
+            "example": null
           }
         }
       },
@@ -1724,6 +1713,7 @@
       },
       "CreateCardRequest": {
         "type": "object",
+        "required": ["title", "priority", "description", "columnId"],
         "properties": {
           "title": {
             "type": "string",
@@ -1743,7 +1733,7 @@
           "deadline": {
             "type": "string",
             "description": "Deadline of task",
-            "example": "null for now"
+            "example": "March 15"
           },
           "columnId": {
             "type": "string",
@@ -2075,7 +2065,7 @@
           "theme": {
             "type": "string",
             "description": "theme to switch",
-            "example": "Violet"
+            "example": "violet"
           }
         }
       },
@@ -2086,13 +2076,13 @@
           "message": {
             "type": "string",
             "description": "theme to switch",
-            "example": "Success! Theme was changed to Violet"
+            "example": "Success! Theme was changed to violet"
           }
         }
       },
       "HelpRequest": {
         "type": "object",
-        "required": true,
+        "required": ["sender", "comment"],
         "properties": {
           "sender": {
             "type": "string",

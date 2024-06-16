@@ -18,7 +18,7 @@ export const addCard = async (req, res, next) => {
 
     const newCard = await Card.create(cardInfo);
 
-    res.status(201).json({ card: newCard, message: 'Card has been created' });
+    res.status(201).send(newCard);
   } catch (error) {
     next(error);
   }
