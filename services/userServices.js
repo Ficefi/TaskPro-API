@@ -25,15 +25,20 @@ export const updateUserData = async (id, userData) => {
 
 export const sendMail = (sender, comment) => {
   const config = {
-    host: 'smtp.gmail.com',
+    host: 'smtp.ukr.net',
     port: 465,
+    secure: true,
+    auth: {
+      user: process.env.SERVICE_EMAIL,
+      pass: process.env.SERVICE_PASSWORD,
+    },
   };
 
   const transporter = nodemailer.createTransport(config);
   const emailOptions = {
-    from: sender,
-    to: process.env.SERVICE_EMAIL,
-    subject: 'Please Help me',
+    from: process.env.SERVICE_EMAIL,
+    to: process.env.TECH_HELP,
+    subject: `Please Help me with the Problem. My email ${sender}`,
     text: comment,
   };
 

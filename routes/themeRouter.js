@@ -4,6 +4,6 @@ import { changeTheme } from '../controllers/themeControllers.js';
 
 const themeRouter = express.Router();
 
-themeRouter.post('/', auth, changeTheme);
+themeRouter.patch('/', auth, changeTheme);
 
 export default themeRouter;

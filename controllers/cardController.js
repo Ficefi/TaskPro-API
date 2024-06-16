@@ -3,33 +3,32 @@ import HttpError from '../helpers/HttpError.js';
 import { Card } from '../model/tasksList.js';
 
 export const addCard = async (req, res, next) => {
-  const { title, description, columnId } = req.body;
+  const { title, description, priority, deadline, columnId } = req.body;
+  const { _id } = req.user;
 
   try {
     const cardInfo = {
       title,
       description,
-      deadline: null,
+      priority,
+      deadline,
       columnId,
+      owner: _id,
     };
 
     const newCard = await Card.create(cardInfo);
 
-    res.status(200).send(newCard);
+    res.status(201).json({ card: newCard, message: 'Card has been created' });
   } catch (error) {
     next(error);
   }
 };
 
 export const getAllCards = async (req, res, next) => {
-  const { columnId } = req.body;
-
-  if (!columnId) {
-    throw HttpError(404);
-  }
+  const { _id } = req.user;
 
   try {
-    const allCards = await Card.find({ columnId });
+    const allCards = await Card.find({ owner: _id });
 
     res.status(200).send(allCards);
   } catch (error) {
@@ -39,7 +38,7 @@ export const getAllCards = async (req, res, next) => {
 
 export const getOneCard = async (req, res, next) => {
   const { cardId } = req.params;
-  const { columnId } = req.body;
+  const { id } = req.user;
 
   if (!cardId) {
     throw HttpError(404);
@@ -52,7 +51,7 @@ export const getOneCard = async (req, res, next) => {
       throw HttpError(404);
     }
 
-    if (!card.columnId || card.columnId.toString() !== columnId.toString()) {
+    if (card.owner._id.toString() !== id) {
       throw HttpError(400, 'Card does not belong to the specified column');
     }
 
@@ -64,7 +63,7 @@ export const getOneCard = async (req, res, next) => {
 
 export const editCard = async (req, res, next) => {
   const { cardId } = req.params;
-  const { columnId } = req.body;
+  const { id } = req.user;
 
   if (req.body.deadline) {
     req.body.deadline = moment(req.body.deadline, 'DD.MM.YYYY').toDate();
@@ -77,7 +76,7 @@ export const editCard = async (req, res, next) => {
       throw HttpError(404);
     }
 
-    if (!card.columnId || card.columnId.toString() !== columnId.toString()) {
+    if (card.owner._id.toString() !== id) {
       throw HttpError(400, 'Card does not belong to the specified column');
     }
 
@@ -93,7 +92,7 @@ export const editCard = async (req, res, next) => {
 
 export const deleteCard = async (req, res, next) => {
   const { cardId } = req.params;
-  const { columnId } = req.body;
+  const { id } = req.user;
 
   try {
     const card = await Card.findById(cardId);
@@ -102,7 +101,7 @@ export const deleteCard = async (req, res, next) => {
       throw HttpError(404);
     }
 
-    if (!card.columnId || card.columnId.toString() !== columnId.toString()) {
+    if (card.owner._id.toString() !== id) {
       throw HttpError(400, 'Card does not belong to the specified column');
     }
 

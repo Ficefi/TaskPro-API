@@ -10,8 +10,8 @@ import {
 export const SignUp = async (req, res, next) => {
   const { name, email, password } = req.body;
   try {
-    const user = await findUserByEmail(email);
-    if (user) {
+    const isUser = await findUserByEmail(email);
+    if (isUser) {
       throw HttpError(409, 'User already exist');
     }
 
@@ -19,9 +19,15 @@ export const SignUp = async (req, res, next) => {
 
     await createUser({ name, email, password, avatarURL });
 
+    const user = await findUserByEmail(email);
+
+    const newUser = await updateUserWithToken(user.id);
+
     res.status(201).json({
       user: {
+        name,
         email,
+        token: newUser.accessToken,
       },
       message: 'User created',
     });
@@ -49,6 +55,7 @@ export const SignIn = async (req, res, next) => {
       token: newUser.accessToken,
       refreshToken: newUser.refreshToken,
       user: {
+        name: newUser.name,
         email,
       },
     });
