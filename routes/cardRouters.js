@@ -14,6 +14,6 @@ cardRouter.post('/', auth, addCard);
 cardRouter.put('/:cardId', auth, editCard);
 cardRouter.delete('/:cardId', auth, deleteCard);
 cardRouter.get('/:cardId', auth, getOneCard);
-cardRouter.get('/:columnId', auth, getAllCards);
+cardRouter.get('/all/:columnId', auth, getAllCards);
 
 export default cardRouter;

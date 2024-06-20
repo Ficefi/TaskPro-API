@@ -658,7 +658,7 @@
         }
       }
     },
-    "/cards/{columnId}": {
+    "/cards/all/{columnId}": {
       "get": {
         "tags": ["Cards"],
         "summary": "Get all cards in column",
