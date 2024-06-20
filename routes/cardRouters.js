@@ -13,7 +13,7 @@ const cardRouter = express.Router();
 cardRouter.post('/', auth, addCard);
 cardRouter.put('/:cardId', auth, editCard);
 cardRouter.delete('/:cardId', auth, deleteCard);
-cardRouter.get('/', auth, getAllCards);
 cardRouter.get('/:cardId', auth, getOneCard);
+cardRouter.get('/:columnId/:cardId', auth, getAllCards);
 
 export default cardRouter;

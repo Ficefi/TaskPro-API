@@ -11,7 +11,7 @@
   },
   "consumes": ["application/json"],
   "produces": ["application/json"],
-  "servers": [{ "url": "" }],
+  "servers": [{ "url": "https://taskpro-api-j11u.onrender.com" }],
   "tags": [
     {
       "name": "Auth",
@@ -656,11 +656,29 @@
             "content": {}
           }
         }
-      },
+      }
+    },
+    "/cards/{columnId}/{cardId}": {
       "get": {
         "tags": ["Cards"],
-        "summary": "Get all Cards",
+        "summary": "Get all cards in column",
         "security": [{ "Bearer": [] }],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "columnId",
+            "required": true,
+            "type": "string",
+            "description": "Enter column id"
+          },
+          {
+            "in": "path",
+            "name": "cardId",
+            "required": true,
+            "type": "string",
+            "description": "Enter card id"
+          }
+        ],
         "responses": {
           "200": {
             "description": "Successful operation",

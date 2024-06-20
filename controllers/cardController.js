@@ -26,11 +26,13 @@ export const addCard = async (req, res, next) => {
 
 export const getAllCards = async (req, res, next) => {
   const { _id } = req.user;
+  const { columnId } = req.params;
 
   try {
     const allCards = await Card.find({ owner: _id });
+    const cards = allCards.filter((card) => card.columnId == columnId);
 
-    res.status(200).send(allCards);
+    res.status(200).send(cards);
   } catch (error) {
     next(error);
   }
