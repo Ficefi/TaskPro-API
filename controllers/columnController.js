@@ -11,7 +11,7 @@ export const addColumn = async (req, res, next) => {
 
   const column = await Column.findOne({ title });
 
-  if (column) {
+  if (column.boardId === boardId) {
     throw HttpError(400, 'This title is already used');
   }
 
