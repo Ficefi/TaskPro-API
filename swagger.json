@@ -658,7 +658,7 @@
         }
       }
     },
-    "/cards/{columnId}/{cardId}": {
+    "/cards/{columnId}": {
       "get": {
         "tags": ["Cards"],
         "summary": "Get all cards in column",
@@ -670,13 +670,6 @@
             "required": true,
             "type": "string",
             "description": "Enter column id"
-          },
-          {
-            "in": "path",
-            "name": "cardId",
-            "required": true,
-            "type": "string",
-            "description": "Enter card id"
           }
         ],
         "responses": {
