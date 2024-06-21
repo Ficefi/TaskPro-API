@@ -9,19 +9,19 @@ export const addColumn = async (req, res, next) => {
     throw HttpError(400, 'Title is required');
   }
 
-  const column = await Column.findOne({ title });
-
-  if (column) {
-    throw HttpError(400, 'This title is already used');
-  }
-
-  const taskColumn = {
-    title,
-    boardId,
-    owner: _id,
-  };
-
   try {
+    const column = await Column.findOne({ title });
+
+    if (column && column.boardId == boardId) {
+      throw HttpError(400, 'This title is already used');
+    }
+
+    const taskColumn = {
+      title,
+      boardId,
+      owner: _id,
+    };
+
     const newColumn = await Column.create(taskColumn);
 
     res.status(201).send(newColumn);
